@@ -3,723 +3,743 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR Mobile Showroom - Complete Inventory</title>
+    <title>MR Mobile Showroom - Daily Deals</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f4;
             color: #333;
-            line-height: 1.6;
         }
-
+        
         header {
-            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #fff;
-            padding: 12px 0;
+            padding: 15px 20px;
             position: sticky;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-
-        .header-container {
+        
+        .header-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-wrap: wrap;
         }
-
-        .logo {
+        
+        .header-row h2 {
             font-size: 24px;
             font-weight: bold;
+            white-space: nowrap;
         }
-
-        .logo span {
-            color: #d60000;
+        
+        input, select {
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
         }
-
-        .trust-bar {
-            background: #fff;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 12px 0;
+        
+        input {
+            flex: 1;
+            min-width: 200px;
         }
-
-        .trust-container {
+        
+        select {
+            min-width: 150px;
+        }
+        
+        .container {
+            padding: 25px;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 13px;
         }
-
-        .trust-item {
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 30px 0 20px 0;
+            color: #1a1a1a;
+            border-left: 4px solid #d60000;
+            padding-left: 12px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .img-container {
+            height: 180px;
+            background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #555;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
         }
-
-        .trust-item strong {
-            color: #111;
+        
+        .badges {
+            position: absolute;
+            padding: 8px;
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
         }
-
-        .hero {
-            background: linear-gradient(135deg, #111 0%, #2d2d2d 100%);
+        
+        .badge {
+            background: #d60000;
             color: #fff;
-            padding: 60px 20px;
-            text-align: center;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 3px;
         }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-            font-weight: 700;
+        
+        .badge.new {
+            background: #28a745;
         }
-
-        .hero h1 span {
-            color: #d60000;
+        
+        .badge.special {
+            background: #ffc107;
+            color: #000;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
+        
+        .content {
+            padding: 12px;
         }
-
-        .section {
-            padding: 60px 20px;
-        }
-
-        .brand-section {
-            margin-bottom: 60px;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .brand-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #d60000;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #d60000;
-        }
-
-        .products-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-        }
-
-        .product-card {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 18px;
-            transition: all 0.3s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-color: #d60000;
-        }
-
-        .product-name {
-            font-size: 14px;
+        
+        .title {
             font-weight: 600;
-            color: #111;
+            height: 40px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             margin-bottom: 8px;
+            font-size: 13px;
         }
-
-        .product-specs {
+        
+        .specs {
             font-size: 12px;
             color: #666;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            line-height: 1.4;
         }
-
-        .product-price {
-            font-size: 18px;
-            font-weight: 700;
+        
+        .price-section {
+            margin: 10px 0;
+        }
+        
+        .old {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        .price {
             color: #d60000;
-            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
         }
-
-        .add-to-cart {
-            width: 100%;
-            background: #111;
+        
+        .stock {
+            color: #28a745;
+            font-size: 12px;
+            margin: 8px 0;
+            font-weight: 500;
+        }
+        
+        .btn {
+            background: #000;
             color: #fff;
-            border: none;
             padding: 10px;
-            border-radius: 6px;
+            text-align: center;
             cursor: pointer;
+            border: none;
+            width: 100%;
             font-weight: 600;
+            transition: background 0.2s;
             font-size: 13px;
-            transition: background 0.3s;
-            margin-top: 10px;
         }
-
-        .add-to-cart:hover {
+        
+        .btn:hover {
             background: #d60000;
         }
-
+        
         footer {
-            background: #111;
+            background: #1a1a1a;
             color: #fff;
-            padding: 50px 20px 20px;
+            padding: 20px;
             text-align: center;
+            margin-top: 40px;
             font-size: 12px;
-            color: #999;
         }
-
+        
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #856404;
+        }
+        
         @media (max-width: 768px) {
-            .products-list {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .header-row {
+                flex-direction: column;
+            }
+            
+            input, select {
+                width: 100%;
             }
         }
-    </style>
+    
+body{background:#020617!important;color:#fff!important}
+header{background:rgba(2,6,23,.85)!important;backdrop-filter:blur(12px)!important}
+.container{max-width:1600px!important}
+.card{
+background:rgba(15,23,42,.9)!important;
+border:1px solid #334155!important;
+border-radius:20px!important;
+box-shadow:0 0 20px rgba(56,189,248,.08)!important;
+}
+.card:hover{
+transform:translateY(-8px)!important;
+box-shadow:0 0 30px rgba(56,189,248,.25)!important;
+}
+.section-title{color:#38bdf8!important;border-left-color:#38bdf8!important}
+.price{color:#38bdf8!important}
+.btn{
+background:linear-gradient(135deg,#22c55e,#16a34a)!important;
+border-radius:12px!important;
+}
+.hero-banner{
+background:linear-gradient(135deg,#0f172a,#1d4ed8,#7c3aed);
+padding:40px;border-radius:24px;margin:20px 0;text-align:center;
+}
+.brandbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:15px 0}
+.brandchip{padding:10px 18px;border-radius:999px;background:#111827;border:1px solid #334155}
+.floatwa{
+position:fixed;right:20px;bottom:20px;background:#25D366;color:white;
+width:65px;height:65px;border-radius:50%;display:flex;align-items:center;
+justify-content:center;text-decoration:none;font-size:30px;z-index:9999}
+</style>
 </head>
 <body>
     <header>
-        <div class="header-container">
-            <div class="logo">MR <span>Mobile</span></div>
+        <div class="header-row">
+            <h2>📱 MR Mobile Showroom</h2>
+            <input type="text" placeholder="Search products...">
+            <select>
+                <option>Default Sorting</option>
+                <option>Low to High Price</option>
+                <option>High to Low Price</option>
+                <option>Newest</option>
+                <option>Best Battery Health</option>
+            </select>
         </div>
     </header>
 
-    <div class="trust-bar">
-        <div class="trust-container">
-            <div class="trust-item">🔐 <strong>100% Authentic</strong></div>
-            <div class="trust-item">✅ <strong>30-Day Returns</strong></div>
-            <div class="trust-item">📦 <strong>Free Shipping</strong></div>
-            <div class="trust-item">🏆 <strong>Certified Preowned</strong></div>
-            <div class="trust-item">💳 <strong>EMI Available</strong></div>
+    <div class="container">
+<div class="hero-banner">
+<h1>Mr.Mobile | Mobile Phone Showroom | Coimbatore</h1>
+<p>Premium Pre-Owned & Flagship Smartphones • Updated Daily</p>
+<p>📞 7010291006 • Follow @mr.mobile_rsp</p>
+<div class="brandbar">
+<div class="brandchip">🍎 Apple</div>
+<div class="brandchip">📱 Samsung</div>
+<div class="brandchip">⚡ OnePlus</div>
+<div class="brandchip">🔷 Vivo</div>
+<div class="brandchip">🟢 OPPO</div>
+<div class="brandchip">📷 Pixel</div>
+</div>
+</div>
+
+        <div class="note">
+            <strong>Note:</strong> BH = Battery Health | CC = Cycle Count | EMI Available (BAJAJ/Credit Card) | Prepaid Courier Only
+        </div>
+
+        <!-- APPLE SECTION -->
+        <h1 class="section-title">🍎 APPLE IPHONES</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span><span class="badge">PREOWNED</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 17 Pro Max 1TB Deep Blue</div>
+                    <div class="specs">5G | Oct 2026 Warranty | BH: 100%</div>
+                    <div class="price-section"><div class="price">₹165,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SPECIAL</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 17 Pro Max 1TB Deep Blue Dual E-Sim</div>
+                    <div class="specs">Apple Care+ | Dec 2027 Warranty | 5G</div>
+                    <div class="price-section"><div class="price">₹162,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 17 Pro Max 512GB Silver</div>
+                    <div class="specs">Apple Care+ | Oct 2027 Warranty | BH: 100%</div>
+                    <div class="price-section"><div class="price">₹162,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 17 Pro Max 512GB Silver</div>
+                    <div class="specs">Feb 2027 Warranty | BH: 100% | 5G</div>
+                    <div class="price-section"><div class="price">₹157,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">POPULAR</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 17 Pro Max 256GB Silver</div>
+                    <div class="specs">Jan 2027 Warranty | BH: 100% | 5G</div>
+                    <div class="price-section"><div class="price">₹132,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 16 Pro Max 256GB Black Titanium</div>
+                    <div class="specs">Apple Care+ | Sep 2026 Warranty | BH: 99%</div>
+                    <div class="price-section"><div class="old">₹120,000</div><div class="price">₹110,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">NEW</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 15 Plus 256GB Black</div>
+                    <div class="specs">BH: 98% | 5G | Dual E-Sim</div>
+                    <div class="price-section"><div class="old">₹65,000</div><div class="price">₹57,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">BUDGET</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPhone 14 Pro Max 256GB Deep Purple</div>
+                    <div class="specs">BH: 85% | 5G</div>
+                    <div class="price-section"><div class="old">₹80,000</div><div class="price">₹67,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MACBOOK SECTION -->
+        <h1 class="section-title">💻 MACBOOKS</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">PREMIUM</span></div>
+                    <span>💻</span>
+                </div>
+                <div class="content">
+                    <div class="title">MacBook Pro M3 Pro 18/512</div>
+                    <div class="specs">14 inch Space Black | BH: 94% | CC: 147</div>
+                    <div class="price-section"><div class="price">₹112,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>💻</span>
+                </div>
+                <div class="content">
+                    <div class="title">MacBook Pro M1 Pro 16/512</div>
+                    <div class="specs">16 inch Space Gray | BH: 98% | CC: 26</div>
+                    <div class="price-section"><div class="old">₹115,000</div><div class="price">₹102,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">POPULAR</span></div>
+                    <span>💻</span>
+                </div>
+                <div class="content">
+                    <div class="title">MacBook Air M4 16/256</div>
+                    <div class="specs">15 inch Midnight | June 2026 Warranty | BH: 100%</div>
+                    <div class="price-section"><div class="old">₹90,000</div><div class="price">₹82,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>💻</span>
+                </div>
+                <div class="content">
+                    <div class="title">MacBook Pro M2 Pro 16/512</div>
+                    <div class="specs">14 inch Space Gray | Apple Care+ | Oct 2026 Warranty</div>
+                    <div class="price-section"><div class="old">₹100,000</div><div class="price">₹92,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- APPLE WATCHES SECTION -->
+        <h1 class="section-title">⌚ APPLE WATCHES</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">PREMIUM</span></div>
+                    <span>⌚</span>
+                </div>
+                <div class="content">
+                    <div class="title">Apple Watch Ultra 3 49mm</div>
+                    <div class="specs">Natural GPS+Cellular | Nov 2026 Warranty | BH: 100%</div>
+                    <div class="price-section"><div class="price">₹62,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>⌚</span>
+                </div>
+                <div class="content">
+                    <div class="title">Apple Watch Ultra 2 49mm Titanium</div>
+                    <div class="specs">GPS+Cellular | Milanese Loop | BH: 96%</div>
+                    <div class="price-section"><div class="old">₹58,000</div><div class="price">₹52,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">AFFORDABLE</span></div>
+                    <span>⌚</span>
+                </div>
+                <div class="content">
+                    <div class="title">Apple Watch Series 9 45mm</div>
+                    <div class="specs">Midnight GPS+Cellular | BH: 88%</div>
+                    <div class="price-section"><div class="old">₹20,000</div><div class="price">₹16,500</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">BUDGET</span></div>
+                    <span>⌚</span>
+                </div>
+                <div class="content">
+                    <div class="title">Apple Watch SE 2 40mm Midnight</div>
+                    <div class="specs">GPS | BH: 100% | Unused Strap</div>
+                    <div class="price-section"><div class="old">₹18,000</div><div class="price">₹15,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAMSUNG SECTION -->
+        <h1 class="section-title">🔷 SAMSUNG</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">PREMIUM</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">Samsung Z Fold 7 16/1TB</div>
+                    <div class="specs">5G | Blue Shadow | Aug 2026 Warranty</div>
+                    <div class="price-section"><div class="price">₹127,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">POPULAR</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">Samsung S26 Ultra 12/512</div>
+                    <div class="specs">5G | Sliver Shadow | Jan 2027 Warranty</div>
+                    <div class="price-section"><div class="old">₹135,000</div><div class="price">₹125,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">Samsung S25 Ultra 12/512</div>
+                    <div class="specs">5G | Titanium Black | Titanium Silver Blue</div>
+                    <div class="price-section"><div class="old">₹95,000</div><div class="price">₹84,000</div></div>
+                    <div class="stock">✓ In Stock (5 units)</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">BUDGET</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">Samsung Z Flip 7 FE 8/256</div>
+                    <div class="specs">5G | Black/White | Sep 2026 Warranty</div>
+                    <div class="price-section"><div class="old">₹55,000</div><div class="price">₹48,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTHER BRANDS SECTION -->
+        <h1 class="section-title">🌍 OTHER BRANDS</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">PREMIUM</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">OnePlus 15 16/512</div>
+                    <div class="specs">5G | Sand Storm | Feb 2027 Warranty</div>
+                    <div class="price-section"><div class="price">₹77,000</div></div>
+                    <div class="stock">✓ In Stock (2 units)</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SPECIAL</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">Google Pixel 10 Pro XL 16/256</div>
+                    <div class="specs">5G | Jade | Dec 2026 Warranty</div>
+                    <div class="price-section"><div class="old">₹100,000</div><div class="price">₹92,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">NEW</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">OPPO Find X9 Pro 16/512</div>
+                    <div class="specs">5G | Silk White | Unused | 1 Year Warranty</div>
+                    <div class="price-section"><div class="price">₹85,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">PREMIUM</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">VIVO X300 Ultra 16/512</div>
+                    <div class="specs">5G | Eclipse Black | May 2027 Warranty</div>
+                    <div class="price-section"><div class="price">₹127,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLETS SECTION -->
+        <h1 class="section-title">📱 TABLETS & IPADS</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">PREMIUM</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPad Pro M5 13inch 256GB</div>
+                    <div class="specs">Wi-Fi | Space Black | Apple Care+ | Jan 2028 Warranty</div>
+                    <div class="price-section"><div class="price">₹117,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">SALE</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPad Air M3 13inch 128GB</div>
+                    <div class="specs">Wi-Fi | Space Gray | BH: 100% | July 2026 Warranty</div>
+                    <div class="price-section"><div class="old">₹60,000</div><div class="price">₹54,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">BUDGET</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">Samsung Tab S9 FE+ 8/128</div>
+                    <div class="specs">12.4 inch | Wi-Fi | Silver</div>
+                    <div class="price-section"><div class="old">₹38,000</div><div class="price">₹32,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-container">
+                    <div class="badges"><span class="badge">AFFORDABLE</span></div>
+                    <span>📱</span>
+                </div>
+                <div class="content">
+                    <div class="title">iPad Mini A17 Pro 8.3inch</div>
+                    <div class="specs">128GB | 5G+Wi-Fi | Blue | July 2026 Warranty</div>
+                    <div class="price-section"><div class="price">₹40,000</div></div>
+                    <div class="stock">✓ In Stock</div>
+                    <button class="btn">📱 WhatsApp Inquiry</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Complete <span>Mobile</span> Inventory</h1>
-            <p style="color: #ccc; font-size: 18px;">100+ Premium Preowned Devices</p>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <div class="brand-section">
-                <h2 class="brand-title">🍎 APPLE (37 Products)</h2>
-                <div class="products-list">
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro Max 1TB Deep Blue</div>
-                        <div class="product-specs">Oct 2026 Warranty | BH:100 | 5G</div>
-                        <div class="product-price">₹165,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro Max 1TB Deep Blue</div>
-                        <div class="product-specs">Dual E-Sim | Apple Care+ | Dec 2027</div>
-                        <div class="product-price">₹162,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro Max 512GB Silver</div>
-                        <div class="product-specs">Apple Care+ | Oct 2027 | BH:100</div>
-                        <div class="product-price">₹162,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro Max 512GB Silver</div>
-                        <div class="product-specs">Feb 2027 Warranty | BH:100</div>
-                        <div class="product-price">₹157,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro Max 256GB Silver</div>
-                        <div class="product-specs">Jan 2027 Warranty | BH:100</div>
-                        <div class="product-price">₹132,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro Max 256GB Deep Blue</div>
-                        <div class="product-specs">Jan 2027 Warranty | BH:100</div>
-                        <div class="product-price">₹132,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro 512GB Cosmic Orange</div>
-                        <div class="product-specs">Apple Care+ | Oct 2027 | BH:100</div>
-                        <div class="product-price">₹152,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Pro 256GB Deep Blue</div>
-                        <div class="product-specs">Apple Care+ | Oct 2027 | BH:100</div>
-                        <div class="product-price">₹130,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Pro Max 512GB Natural Titanium</div>
-                        <div class="product-specs">Apple Care+ | Dec 2026 | BH:99</div>
-                        <div class="product-price">₹125,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Pro Max 256GB Desert Titanium</div>
-                        <div class="product-specs">Apple Care+ | Jan 2028 | BH:100</div>
-                        <div class="product-price">₹118,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Pro Max 256GB Black Titanium</div>
-                        <div class="product-specs">Apple Care+ | Sep 2026 | BH:99</div>
-                        <div class="product-price">₹110,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Pro Max 256GB Black Titanium</div>
-                        <div class="product-specs">Jan 2027 Warranty | BH:100</div>
-                        <div class="product-price">₹105,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Pro 256GB Black Titanium</div>
-                        <div class="product-specs">Apple Care+ | Sep 2026 | BH:100</div>
-                        <div class="product-price">₹102,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Air 256GB Sky Blue</div>
-                        <div class="product-specs">Oct 2026 Warranty | BH:100</div>
-                        <div class="product-price">₹85,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 Air 256GB Light Gold</div>
-                        <div class="product-specs">March 2027 Warranty | BH:100</div>
-                        <div class="product-price">₹85,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 256GB Lavender</div>
-                        <div class="product-specs">Apple Care+ | May 2028 | BH:100</div>
-                        <div class="product-price">₹82,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 256GB White</div>
-                        <div class="product-specs">Apple Care+ | Mar 2027 | BH:100</div>
-                        <div class="product-price">₹77,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 256GB Lavender</div>
-                        <div class="product-specs">April 2027 Warranty | BH:100</div>
-                        <div class="product-price">₹75,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 17 256GB Black (x2)</div>
-                        <div class="product-specs">Dec 2026 Warranty | BH:100</div>
-                        <div class="product-price">₹72,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 15 Pro Max 512GB Blue Titanium</div>
-                        <div class="product-specs">Unused | Apple Care+ | Aug 2026</div>
-                        <div class="product-price">₹97,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 15 Pro Max 256GB Black Titanium</div>
-                        <div class="product-specs">Oct 2026 Warranty | BH:96</div>
-                        <div class="product-price">₹80,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 15 Pro 512GB Black Titanium</div>
-                        <div class="product-specs">BH:85</div>
-                        <div class="product-price">₹72,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Plus 256GB Black</div>
-                        <div class="product-specs">BH:100</div>
-                        <div class="product-price">₹75,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPhone 16 Plus 128GB Black</div>
-                        <div class="product-specs">Oct 2026 Warranty | BH:100</div>
-                        <div class="product-price">₹64,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">MacBook Pro M3 Pro 18/512</div>
-                        <div class="product-specs">14 inch Space Black | BH:94</div>
-                        <div class="product-price">₹112,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">MacBook Pro M1 Pro 16/512</div>
-                        <div class="product-specs">16 inch Space Gray | BH:98</div>
-                        <div class="product-price">₹102,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">MacBook Air M4 16/256</div>
-                        <div class="product-specs">15 inch Midnight | June 2026 | BH:100</div>
-                        <div class="product-price">₹82,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPad Pro M5 13inch 256GB</div>
-                        <div class="product-specs">Wi-Fi Space Black | Apple Care+ | Jan 2028</div>
-                        <div class="product-price">₹117,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPad Air M3 13inch 256GB</div>
-                        <div class="product-specs">Space Gray | BH:93 | Only iPad</div>
-                        <div class="product-price">₹52,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iPad Air M3 13inch 128GB</div>
-                        <div class="product-specs">Wi-Fi Space Gray | BH:100</div>
-                        <div class="product-price">₹55,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Apple Watch Ultra 3 49mm</div>
-                        <div class="product-specs">GPS+Cellular | Blue Trail Loop | Nov 2026</div>
-                        <div class="product-price">₹62,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Apple Watch Ultra 2 49mm</div>
-                        <div class="product-specs">Titanium GPS+Cellular | Milanese Loop</div>
-                        <div class="product-price">₹52,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="brand-section">
-                <h2 class="brand-title">📱 SAMSUNG (35+ Products)</h2>
-                <div class="products-list">
-                    <div class="product-card">
-                        <div class="product-name">Z Fold 7 5G 16/1TB Blue Shadow</div>
-                        <div class="product-specs">Aug 2026 Warranty | Foldable</div>
-                        <div class="product-price">₹127,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Fold 7 5G 12/512 Jet Black</div>
-                        <div class="product-specs">Aug 2026 Warranty | Foldable</div>
-                        <div class="product-price">₹118,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Fold 7 5G 12/512 Jet Black</div>
-                        <div class="product-specs">July 2026 Warranty | Foldable</div>
-                        <div class="product-price">₹118,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26 Ultra 5G 12/512 Silver Shadow</div>
-                        <div class="product-specs">Special Edition | Jan 2027</div>
-                        <div class="product-price">₹125,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26 Ultra 5G 12/512 White</div>
-                        <div class="product-specs">Mar 2027 Warranty</div>
-                        <div class="product-price">₹123,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26 Ultra 5G 12/512 Cobalt Violet</div>
-                        <div class="product-specs">Mar 2027 Warranty</div>
-                        <div class="product-price">₹123,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26 Ultra 5G 12/256 Black</div>
-                        <div class="product-specs">Flagship</div>
-                        <div class="product-price">₹100,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S25 Ultra 5G 12/512 Titanium Silver Blue</div>
-                        <div class="product-specs">Jan 2027 Warranty</div>
-                        <div class="product-price">₹92,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S25 Ultra 5G 12/512 Titanium Silver Blue</div>
-                        <div class="product-specs">July 2026 Warranty</div>
-                        <div class="product-price">₹90,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S25 Ultra 5G 12/512 (x5)</div>
-                        <div class="product-specs">Titanium Black/Silver Blue Mixed</div>
-                        <div class="product-price">₹84,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S25 Ultra 5G 12/256 Titanium Gray</div>
-                        <div class="product-specs">Aug 2026 Warranty</div>
-                        <div class="product-price">₹80,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26+ 5G 12/512 Cobalt Violet</div>
-                        <div class="product-specs">Mar 2027 Warranty</div>
-                        <div class="product-price">₹87,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Flip 7 5G 12/512 Mint</div>
-                        <div class="product-specs">Sep 2026 Warranty | Foldable</div>
-                        <div class="product-price">₹72,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Flip 7 5G 12/512 Jet Black/Blue Shadow</div>
-                        <div class="product-specs">July 2026 Warranty | Foldable</div>
-                        <div class="product-price">₹72,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Flip 7 5G 12/256 Blue Shadow</div>
-                        <div class="product-specs">Only Mobile | Foldable</div>
-                        <div class="product-price">₹60,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S24 Ultra 5G 12/512 Titanium Blue</div>
-                        <div class="product-specs">Special Edition</div>
-                        <div class="product-price">₹70,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S24 Ultra 5G 12/512 Titanium Violet</div>
-                        <div class="product-specs">Flagship</div>
-                        <div class="product-price">₹67,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S24 Ultra 5G 12/256 Titanium Yellow</div>
-                        <div class="product-specs">Flagship</div>
-                        <div class="product-price">₹65,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26 5G 12/512 White</div>
-                        <div class="product-specs">Mar 2027 Warranty</div>
-                        <div class="product-price">₹77,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S26 5G 12/256 Sky Blue</div>
-                        <div class="product-specs">Mar 2027 Warranty</div>
-                        <div class="product-price">₹70,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Fold 6 5G 12/256 Navy</div>
-                        <div class="product-specs">July 2026 Warranty | Foldable</div>
-                        <div class="product-price">₹70,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S23 Ultra 5G 12/512 Phantom Black</div>
-                        <div class="product-specs">Used</div>
-                        <div class="product-price">₹52,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Flip 7 FE 5G 8/256 Black</div>
-                        <div class="product-specs">Sep 2026 Warranty</div>
-                        <div class="product-price">₹48,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Z Flip 7 FE 5G 8/256 White</div>
-                        <div class="product-specs">Only Mobile | Jan 2027</div>
-                        <div class="product-price">₹48,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">S25 FE 5G 8/128 Jet Black</div>
-                        <div class="product-specs">Dec 2026 Warranty</div>
-                        <div class="product-price">₹45,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Watch 8 Classic 46mm</div>
-                        <div class="product-specs">LTE+GPS White | Feb 2027</div>
-                        <div class="product-price">₹27,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Watch 8 44mm LTE+GPS Graphite</div>
-                        <div class="product-specs">May 2027 Warranty</div>
-                        <div class="product-price">₹22,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Tab S9 FE+ 8/128 Silver</div>
-                        <div class="product-specs">12.4 inch Wi-Fi | Tablet</div>
-                        <div class="product-price">₹32,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="brand-section">
-                <h2 class="brand-title">🌟 OTHER PREMIUM BRANDS (30+ Products)</h2>
-                <div class="products-list">
-                    <div class="product-card">
-                        <div class="product-name">OnePlus 15 5G 16/512</div>
-                        <div class="product-specs">Sand Storm | Feb 2027 (x2)</div>
-                        <div class="product-price">₹77,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">OnePlus 13 5G 16/512</div>
-                        <div class="product-specs">Midnight Ocean | Jan 2027</div>
-                        <div class="product-price">₹57,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Google Pixel 10 Pro XL</div>
-                        <div class="product-specs">Jade | Dec 2026 Warranty</div>
-                        <div class="product-price">₹92,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Google Pixel 9 Pro Fold</div>
-                        <div class="product-specs">Obsidian | Only Mobile | Foldable</div>
-                        <div class="product-price">₹77,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Google Pixel 9 Pro XL</div>
-                        <div class="product-specs">Porcelain | Flagship</div>
-                        <div class="product-price">₹60,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Vivo X300 Ultra 5G</div>
-                        <div class="product-specs">Eclipse Black | May 2027</div>
-                        <div class="product-price">₹127,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Vivo X300 Pro 5G</div>
-                        <div class="product-specs">Elite Black | Jan 2027</div>
-                        <div class="product-price">₹87,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Vivo X300 Pro 5G</div>
-                        <div class="product-specs">Dune Gold | Dec 2026</div>
-                        <div class="product-price">₹87,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Motorola Signature 5G</div>
-                        <div class="product-specs">Pantone Martini Olive | Jan 2027</div>
-                        <div class="product-price">₹60,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Motorola Edge 70 5G</div>
-                        <div class="product-specs">Pantone Gadget Gray | May 2027</div>
-                        <div class="product-price">₹27,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iQOO 15 5G 12/256</div>
-                        <div class="product-specs">Legend | Jan 2027 | Gaming</div>
-                        <div class="product-price">₹63,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">iQOO 13 5G 16/512</div>
-                        <div class="product-specs">Nardo Grey | Oct 2026</div>
-                        <div class="product-price">₹50,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">OPPO Find X9 Pro 5G</div>
-                        <div class="product-specs">Silk White | Unused | 1 Year</div>
-                        <div class="product-price">₹85,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">OPPO Find X9 5G</div>
-                        <div class="product-specs">Titanium Grey | Nov 2026</div>
-                        <div class="product-price">₹60,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Realme 16 Pro+ 5G</div>
-                        <div class="product-specs">Camellia Pink | Apr 2027</div>
-                        <div class="product-price">₹39,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Realme 16 Pro+ 5G</div>
-                        <div class="product-specs">Master Grey | Mar 2027</div>
-                        <div class="product-price">₹39,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Nothing Phone 4a 5G</div>
-                        <div class="product-specs">White | April 2027 | Unique</div>
-                        <div class="product-price">₹33,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Redmi Pad 2 Pro 12.1 inch</div>
-                        <div class="product-specs">Graphite Grey | Jan 2027 | Tablet</div>
-                        <div class="product-price">₹27,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">MacBook Air M4 16/256</div>
-                        <div class="product-specs">15 inch Midnight | June 2026</div>
-                        <div class="product-price">₹82,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">MacBook Pro M2 Pro 16/512</div>
-                        <div class="product-specs">14 inch Space Gray | Oct 2026</div>
-                        <div class="product-price">₹92,000</div>
-                        <button class="add-to-cart">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer>
-        <p>© 2026 MR Mobile Showroom. All Rights Reserved. | Updated: 06/06/2026</p>
+        <p>&copy; 2026 MR Mobile Showroom. All rights reserved. | Warranty & Authenticity Guaranteed | Prepaid Courier Service Available</p>
     </footer>
+
+    <script>
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Product added to cart!');
+            });
+        });
+
+        document.querySelector('input').addEventListener('keyup', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                const title = card.querySelector('.title').textContent.toLowerCase();
+                card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+    </script>
+
+<script>
+document.querySelectorAll('.btn').forEach(btn=>{
+btn.onclick=function(){
+const c=this.closest('.card');
+const model=c.querySelector('.title').innerText;
+const specs=c.querySelector('.specs').innerText;
+const price=c.querySelector('.price').innerText;
+const msg=`Hi Mr.Mobile,%0A%0AI am interested in:%0A${model}%0A%0A${specs}%0APrice: ${price}`;
+window.open('https://wa.me/917010291006?text='+msg,'_blank');
+}
+})
+</script>
+<a class="floatwa" href="https://wa.me/917010291006?text=HI">💬</a>
 </body>
 </html>
