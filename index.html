@@ -1,745 +1,944 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR Mobile Showroom - Daily Deals</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f4;
-            color: #333;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: #fff;
-            padding: 15px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .header-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-        
-        .header-row h2 {
-            font-size: 24px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-        
-        input, select {
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-        }
-        
-        input {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        select {
-            min-width: 150px;
-        }
-        
-        .container {
-            padding: 25px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 30px 0 20px 0;
-            color: #1a1a1a;
-            border-left: 4px solid #d60000;
-            padding-left: 12px;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .img-container {
-            height: 180px;
-            background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            position: relative;
-        }
-        
-        .badges {
-            position: absolute;
-            padding: 8px;
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-        
-        .badge {
-            background: #d60000;
-            color: #fff;
-            font-size: 9px;
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 3px;
-        }
-        
-        .badge.new {
-            background: #28a745;
-        }
-        
-        .badge.special {
-            background: #ffc107;
-            color: #000;
-        }
-        
-        .content {
-            padding: 12px;
-        }
-        
-        .title {
-            font-weight: 600;
-            height: 40px;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
-        
-        .specs {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 6px;
-            line-height: 1.4;
-        }
-        
-        .price-section {
-            margin: 10px 0;
-        }
-        
-        .old {
-            color: #999;
-            text-decoration: line-through;
-            font-size: 12px;
-            margin-right: 8px;
-        }
-        
-        .price {
-            color: #d60000;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        .stock {
-            color: #28a745;
-            font-size: 12px;
-            margin: 8px 0;
-            font-weight: 500;
-        }
-        
-        .btn {
-            background: #000;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            font-weight: 600;
-            transition: background 0.2s;
-            font-size: 13px;
-        }
-        
-        .btn:hover {
-            background: #d60000;
-        }
-        
-        footer {
-            background: #1a1a1a;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            margin-top: 40px;
-            font-size: 12px;
-        }
-        
-        .note {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #856404;
-        }
-        
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            
-            .header-row {
-                flex-direction: column;
-            }
-            
-            input, select {
-                width: 100%;
-            }
-        }
-    
-body{background:#020617!important;color:#fff!important}
-header{background:rgba(2,6,23,.85)!important;backdrop-filter:blur(12px)!important}
-.container{max-width:1600px!important}
-.card{
-background:rgba(15,23,42,.9)!important;
-border:1px solid #334155!important;
-border-radius:20px!important;
-box-shadow:0 0 20px rgba(56,189,248,.08)!important;
-}
-.card:hover{
-transform:translateY(-8px)!important;
-box-shadow:0 0 30px rgba(56,189,248,.25)!important;
-}
-.section-title{color:#38bdf8!important;border-left-color:#38bdf8!important}
-.price{color:#38bdf8!important}
-.btn{
-background:linear-gradient(135deg,#22c55e,#16a34a)!important;
-border-radius:12px!important;
-}
-.hero-banner{
-background:linear-gradient(135deg,#0f172a,#1d4ed8,#7c3aed);
-padding:40px;border-radius:24px;margin:20px 0;text-align:center;
-}
-.brandbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:15px 0}
-.brandchip{padding:10px 18px;border-radius:999px;background:#111827;border:1px solid #334155}
-.floatwa{
-position:fixed;right:20px;bottom:20px;background:#25D366;color:white;
-width:65px;height:65px;border-radius:50%;display:flex;align-items:center;
-justify-content:center;text-decoration:none;font-size:30px;z-index:9999}
-</style>
-</head>
-<body>
-    <header>
-        <div class="header-row">
-            <h2>📱 MR Mobile Showroom</h2>
-            <input type="text" placeholder="Search products...">
-            <select>
-                <option>Default Sorting</option>
-                <option>Low to High Price</option>
-                <option>High to Low Price</option>
-                <option>Newest</option>
-                <option>Best Battery Health</option>
-            </select>
-        </div>
-    </header>
 
-    <div class="container">
-<div class="hero-banner">
-<h1>Mr.Mobile | Mobile Phone Showroom | Coimbatore</h1>
-<p>Premium Pre-Owned & Flagship Smartphones • Updated Daily</p>
-<p>📞 7010291006 • Follow @mr.mobile_rsp</p>
-<div class="brandbar">
-<div class="brandchip">🍎 Apple</div>
-<div class="brandchip">📱 Samsung</div>
-<div class="brandchip">⚡ OnePlus</div>
-<div class="brandchip">🔷 Vivo</div>
-<div class="brandchip">🟢 OPPO</div>
-<div class="brandchip">📷 Pixel</div>
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Mr.Mobile Premium Daily Stock</title>
+<style>
+body{margin:0;font-family:Inter,Arial;background:#050816;color:#fff}
+.hero{min-height:60vh;background:linear-gradient(135deg,#0f172a,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px}
+.hero h1{font-size:58px;margin:0}
+.hero p{font-size:20px;opacity:.9}
+.btns a{display:inline-block;margin:8px;padding:14px 22px;border-radius:999px;background:#fff;color:#111;text-decoration:none;font-weight:bold}
+.sticky{position:sticky;top:0;background:rgba(5,8,22,.95);backdrop-filter:blur(12px);padding:12px;display:flex;gap:10px;z-index:999}
+input{flex:1;padding:14px;border-radius:12px;border:none}
+select{padding:14px;border-radius:12px}
+.section{padding:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;backdrop-filter:blur(10px)}
+.card img{width:100%;height:220px;object-fit:cover}
+.card h3{padding:0 16px;font-size:18px}
+.brand{padding:16px;color:#8ab4ff;font-weight:bold}
+.price{padding:0 16px 16px;font-size:28px;color:#60a5fa;font-weight:bold}
+.wa{display:block;margin:16px;background:#25D366;color:#fff;text-decoration:none;text-align:center;padding:14px}
+</style></head><body>
+<div class='hero'>
+<div>
+<h1>Mr.Mobile</h1>
+<p>Premium Daily Stock Update • Coimbatore</p>
+<p>150+ Devices Available Today</p>
+<div class='btns'>
+<a href='https://wa.me/917010291006?text=HI'>WhatsApp</a>
+<a href='https://www.instagram.com/mr.mobile_rsp'>Instagram</a>
 </div>
+</div></div>
+
+<div class='sticky'>
+<input id='search' placeholder='Search iPhone, Samsung, Pixel...'>
+<select id='sort'><option value=''>Sort</option><option value='low'>Price Low→High</option><option value='high'>Price High→Low</option></select>
 </div>
 
-        <div class="note">
-            <strong>Note:</strong> BH = Battery Health | CC = Cycle Count | EMI Available (BAJAJ/Credit Card) | Prepaid Courier Only
-        </div>
+<div class='section'><h2>🔥 Featured Deals</h2><div class='grid'>
 
-        <!-- APPLE SECTION -->
-        <h1 class="section-title">🍎 APPLE IPHONES</h1>
-        <div class="grid">
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span><span class="badge">PREOWNED</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 17 Pro Max 1TB Deep Blue</div>
-                    <div class="specs">5G | Oct 2026 Warranty | BH: 100%</div>
-                    <div class="price-section"><div class="price">₹165,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SPECIAL</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 17 Pro Max 1TB Deep Blue Dual E-Sim</div>
-                    <div class="specs">Apple Care+ | Dec 2027 Warranty | 5G</div>
-                    <div class="price-section"><div class="price">₹162,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 17 Pro Max 512GB Silver</div>
-                    <div class="specs">Apple Care+ | Oct 2027 Warranty | BH: 100%</div>
-                    <div class="price-section"><div class="price">₹162,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 17 Pro Max 512GB Silver</div>
-                    <div class="specs">Feb 2027 Warranty | BH: 100% | 5G</div>
-                    <div class="price-section"><div class="price">₹157,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">POPULAR</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 17 Pro Max 256GB Silver</div>
-                    <div class="specs">Jan 2027 Warranty | BH: 100% | 5G</div>
-                    <div class="price-section"><div class="price">₹132,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 16 Pro Max 256GB Black Titanium</div>
-                    <div class="specs">Apple Care+ | Sep 2026 Warranty | BH: 99%</div>
-                    <div class="price-section"><div class="old">₹120,000</div><div class="price">₹110,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">NEW</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 15 Plus 256GB Black</div>
-                    <div class="specs">BH: 98% | 5G | Dual E-Sim</div>
-                    <div class="price-section"><div class="old">₹65,000</div><div class="price">₹57,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">BUDGET</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPhone 14 Pro Max 256GB Deep Purple</div>
-                    <div class="specs">BH: 85% | 5G</div>
-                    <div class="price-section"><div class="old">₹80,000</div><div class="price">₹67,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- MACBOOK SECTION -->
-        <h1 class="section-title">💻 MACBOOKS</h1>
-        <div class="grid">
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">PREMIUM</span></div>
-                    <span>💻</span>
-                </div>
-                <div class="content">
-                    <div class="title">MacBook Pro M3 Pro 18/512</div>
-                    <div class="specs">14 inch Space Black | BH: 94% | CC: 147</div>
-                    <div class="price-section"><div class="price">₹112,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>💻</span>
-                </div>
-                <div class="content">
-                    <div class="title">MacBook Pro M1 Pro 16/512</div>
-                    <div class="specs">16 inch Space Gray | BH: 98% | CC: 26</div>
-                    <div class="price-section"><div class="old">₹115,000</div><div class="price">₹102,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">POPULAR</span></div>
-                    <span>💻</span>
-                </div>
-                <div class="content">
-                    <div class="title">MacBook Air M4 16/256</div>
-                    <div class="specs">15 inch Midnight | June 2026 Warranty | BH: 100%</div>
-                    <div class="price-section"><div class="old">₹90,000</div><div class="price">₹82,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>💻</span>
-                </div>
-                <div class="content">
-                    <div class="title">MacBook Pro M2 Pro 16/512</div>
-                    <div class="specs">14 inch Space Gray | Apple Care+ | Oct 2026 Warranty</div>
-                    <div class="price-section"><div class="old">₹100,000</div><div class="price">₹92,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- APPLE WATCHES SECTION -->
-        <h1 class="section-title">⌚ APPLE WATCHES</h1>
-        <div class="grid">
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">PREMIUM</span></div>
-                    <span>⌚</span>
-                </div>
-                <div class="content">
-                    <div class="title">Apple Watch Ultra 3 49mm</div>
-                    <div class="specs">Natural GPS+Cellular | Nov 2026 Warranty | BH: 100%</div>
-                    <div class="price-section"><div class="price">₹62,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>⌚</span>
-                </div>
-                <div class="content">
-                    <div class="title">Apple Watch Ultra 2 49mm Titanium</div>
-                    <div class="specs">GPS+Cellular | Milanese Loop | BH: 96%</div>
-                    <div class="price-section"><div class="old">₹58,000</div><div class="price">₹52,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">AFFORDABLE</span></div>
-                    <span>⌚</span>
-                </div>
-                <div class="content">
-                    <div class="title">Apple Watch Series 9 45mm</div>
-                    <div class="specs">Midnight GPS+Cellular | BH: 88%</div>
-                    <div class="price-section"><div class="old">₹20,000</div><div class="price">₹16,500</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">BUDGET</span></div>
-                    <span>⌚</span>
-                </div>
-                <div class="content">
-                    <div class="title">Apple Watch SE 2 40mm Midnight</div>
-                    <div class="specs">GPS | BH: 100% | Unused Strap</div>
-                    <div class="price-section"><div class="old">₹18,000</div><div class="price">₹15,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SAMSUNG SECTION -->
-        <h1 class="section-title">🔷 SAMSUNG</h1>
-        <div class="grid">
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">PREMIUM</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">Samsung Z Fold 7 16/1TB</div>
-                    <div class="specs">5G | Blue Shadow | Aug 2026 Warranty</div>
-                    <div class="price-section"><div class="price">₹127,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">POPULAR</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">Samsung S26 Ultra 12/512</div>
-                    <div class="specs">5G | Sliver Shadow | Jan 2027 Warranty</div>
-                    <div class="price-section"><div class="old">₹135,000</div><div class="price">₹125,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">Samsung S25 Ultra 12/512</div>
-                    <div class="specs">5G | Titanium Black | Titanium Silver Blue</div>
-                    <div class="price-section"><div class="old">₹95,000</div><div class="price">₹84,000</div></div>
-                    <div class="stock">✓ In Stock (5 units)</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">BUDGET</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">Samsung Z Flip 7 FE 8/256</div>
-                    <div class="specs">5G | Black/White | Sep 2026 Warranty</div>
-                    <div class="price-section"><div class="old">₹55,000</div><div class="price">₹48,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- OTHER BRANDS SECTION -->
-        <h1 class="section-title">🌍 OTHER BRANDS</h1>
-        <div class="grid">
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">PREMIUM</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">OnePlus 15 16/512</div>
-                    <div class="specs">5G | Sand Storm | Feb 2027 Warranty</div>
-                    <div class="price-section"><div class="price">₹77,000</div></div>
-                    <div class="stock">✓ In Stock (2 units)</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SPECIAL</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">Google Pixel 10 Pro XL 16/256</div>
-                    <div class="specs">5G | Jade | Dec 2026 Warranty</div>
-                    <div class="price-section"><div class="old">₹100,000</div><div class="price">₹92,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">NEW</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">OPPO Find X9 Pro 16/512</div>
-                    <div class="specs">5G | Silk White | Unused | 1 Year Warranty</div>
-                    <div class="price-section"><div class="price">₹85,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">PREMIUM</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">VIVO X300 Ultra 16/512</div>
-                    <div class="specs">5G | Eclipse Black | May 2027 Warranty</div>
-                    <div class="price-section"><div class="price">₹127,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- TABLETS SECTION -->
-        <h1 class="section-title">📱 TABLETS & IPADS</h1>
-        <div class="grid">
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">PREMIUM</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPad Pro M5 13inch 256GB</div>
-                    <div class="specs">Wi-Fi | Space Black | Apple Care+ | Jan 2028 Warranty</div>
-                    <div class="price-section"><div class="price">₹117,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">SALE</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPad Air M3 13inch 128GB</div>
-                    <div class="specs">Wi-Fi | Space Gray | BH: 100% | July 2026 Warranty</div>
-                    <div class="price-section"><div class="old">₹60,000</div><div class="price">₹54,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">BUDGET</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">Samsung Tab S9 FE+ 8/128</div>
-                    <div class="specs">12.4 inch | Wi-Fi | Silver</div>
-                    <div class="price-section"><div class="old">₹38,000</div><div class="price">₹32,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="img-container">
-                    <div class="badges"><span class="badge">AFFORDABLE</span></div>
-                    <span>📱</span>
-                </div>
-                <div class="content">
-                    <div class="title">iPad Mini A17 Pro 8.3inch</div>
-                    <div class="specs">128GB | 5G+Wi-Fi | Blue | July 2026 Warranty</div>
-                    <div class="price-section"><div class="price">₹40,000</div></div>
-                    <div class="stock">✓ In Stock</div>
-                    <button class="btn">📱 WhatsApp Inquiry</button>
-                </div>
-            </div>
-        </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro Max 1TB Deep Blue (Oct 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹165,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20Max%201TB%20Deep%20Blue%20(Oct%202026%20Warranty)(BH:100)(5G)%20Price%20₹165000' target='_blank'>WhatsApp Inquiry</a>
     </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro Max 1TB Deep Blue (Dual E</h3>
+      <div class='price'>₹162,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20Max%201TB%20Deep%20Blue%20(Dual%20E%20Price%20₹162000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro Max 512gb Silver (Apple Care+)(Oct 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹162,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20Max%20512gb%20Silver%20(Apple%20Care+)(Oct%202027%20Warranty)(BH:100)(5G)%20Price%20₹162000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳 17 Pro Max 512gb Silver (Feb 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹157,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳%2017%20Pro%20Max%20512gb%20Silver%20(Feb%202027%20Warranty)(BH:100)(5G)%20Price%20₹157000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro 512gb Cosmic Orange (Apple Care+)(Oct 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹152,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20512gb%20Cosmic%20Orange%20(Apple%20Care+)(Oct%202027%20Warranty)(BH:100)(5G)%20Price%20₹152000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro Max 256gb Silver (Jan 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹132,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20Max%20256gb%20Silver%20(Jan%202027%20Warranty)(BH:100)(5G)%20Price%20₹132000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+</div></div>
 
-    <footer>
-        <p>&copy; 2026 MR Mobile Showroom. All rights reserved. | Warranty & Authenticity Guaranteed | Prepaid Courier Service Available</p>
-    </footer>
+<div class='section'><h2>📱 All Stock</h2><div class='grid' id='grid'>
 
-    <script>
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                alert('Product added to cart!');
-            });
-        });
-
-        document.querySelector('input').addEventListener('keyup', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                const title = card.querySelector('.title').textContent.toLowerCase();
-                card.style.display = title.includes(searchTerm) ? 'block' : 'none';
-            });
-        });
-    </script>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro Max 1TB Deep Blue (Oct 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹165,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20Max%201TB%20Deep%20Blue%20(Oct%202026%20Warranty)(BH:100)(5G)%20Price%20₹165000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro Max 1TB Deep Blue (Dual E</h3>
+      <div class='price'>₹162,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20Max%201TB%20Deep%20Blue%20(Dual%20E%20Price%20₹162000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro Max 512gb Silver (Apple Care+)(Oct 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹162,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20Max%20512gb%20Silver%20(Apple%20Care+)(Oct%202027%20Warranty)(BH:100)(5G)%20Price%20₹162000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳 17 Pro Max 512gb Silver (Feb 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹157,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳%2017%20Pro%20Max%20512gb%20Silver%20(Feb%202027%20Warranty)(BH:100)(5G)%20Price%20₹157000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro Max 256gb Silver (Jan 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹132,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20Max%20256gb%20Silver%20(Jan%202027%20Warranty)(BH:100)(5G)%20Price%20₹132000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro Max 256gb Deep Blue (Jan 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹132,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20Max%20256gb%20Deep%20Blue%20(Jan%202027%20Warranty)(BH:100)(5G)%20Price%20₹132000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro Max 256gb Deep Blue (Dec 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹132,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20Max%20256gb%20Deep%20Blue%20(Dec%202026%20Warranty)(BH:100)(5G)%20Price%20₹132000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro 512gb Cosmic Orange (Apple Care+)(Oct 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹152,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20512gb%20Cosmic%20Orange%20(Apple%20Care+)(Oct%202027%20Warranty)(BH:100)(5G)%20Price%20₹152000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Pro 512gb Deep Blue (Dual E</h3>
+      <div class='price'>₹130,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Pro%20512gb%20Deep%20Blue%20(Dual%20E%20Price%20₹130000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳17 Pro 256gb Deep Blue (Apple Care+)(Oct 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹130,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳17%20Pro%20256gb%20Deep%20Blue%20(Apple%20Care+)(Oct%202027%20Warranty)(BH:100)(5G)%20Price%20₹130000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳16 Pro Max 512gb Natural Titanium (Apple Care+)(Dec 2026 Warranty)(BH:99)(5G)</h3>
+      <div class='price'>₹125,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳16%20Pro%20Max%20512gb%20Natural%20Titanium%20(Apple%20Care+)(Dec%202026%20Warranty)(BH:99)(5G)%20Price%20₹125000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳16 Pro Max 256gb Desert Titanium (Apple Care+ With Theft and Loss)(Jan 2028 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹118,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳16%20Pro%20Max%20256gb%20Desert%20Titanium%20(Apple%20Care+%20With%20Theft%20and%20Loss)(Jan%202028%20Warranty)(BH:100)(5G)%20Price%20₹118000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Pro Max 256gb Desert Titanium (Apple Care+)(July 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹117,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Pro%20Max%20256gb%20Desert%20Titanium%20(Apple%20Care+)(July%202027%20Warranty)(BH:100)(5G)%20Price%20₹117000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳16 Pro Max 256gb Black Titanium (Apple Care+)(Sep 2026 Warranty)(BH:99)(5G)</h3>
+      <div class='price'>₹110,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳16%20Pro%20Max%20256gb%20Black%20Titanium%20(Apple%20Care+)(Sep%202026%20Warranty)(BH:99)(5G)%20Price%20₹110000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳16 Pro Max 256gb Black Titanium (Jan 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹105,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳16%20Pro%20Max%20256gb%20Black%20Titanium%20(Jan%202027%20Warranty)(BH:100)(5G)%20Price%20₹105000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳16 Pro Max 256gb Black Titanium (Sep 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹105,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳16%20Pro%20Max%20256gb%20Black%20Titanium%20(Sep%202026%20Warranty)(BH:100)(5G)%20Price%20₹105000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳16 Pro 256gb Black Titanium (Apple Care+)(Sep 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹102,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳16%20Pro%20256gb%20Black%20Titanium%20(Apple%20Care+)(Sep%202026%20Warranty)(BH:100)(5G)%20Price%20₹102000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Pro 256gb Black Titanium (BH:90)(5G)</h3>
+      <div class='price'>₹87,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Pro%20256gb%20Black%20Titanium%20(BH:90)(5G)%20Price%20₹87000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Pro 256gb Natural Titanium (Dual E</h3>
+      <div class='price'>₹85,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Pro%20256gb%20Natural%20Titanium%20(Dual%20E%20Price%20₹85000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Air 256gb Sky Blue (Oct 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹85,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Air%20256gb%20Sky%20Blue%20(Oct%202026%20Warranty)(BH:100)(5G)%20Price%20₹85000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 Air 256gb Light Gold (March 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹85,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20Air%20256gb%20Light%20Gold%20(March%202027%20Warranty)(BH:100)(5G)%20Price%20₹85000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 256gb White (Apple Care+)(Mar 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹77,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20256gb%20White%20(Apple%20Care+)(Mar%202027%20Warranty)(BH:100)(5G)%20Price%20₹77000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 256gb Lavender (April 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹75,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20256gb%20Lavender%20(April%202027%20Warranty)(BH:100)(5G)%20Price%20₹75000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 256gb White (Mar 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹75,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20256gb%20White%20(Mar%202027%20Warranty)(BH:100)(5G)%20Price%20₹75000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>17 256gb Black (Dec 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹72,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2017%20256gb%20Black%20(Dec%202026%20Warranty)(BH:100)(5G)%20Price%20₹72000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳15 Pro Max 512gb Blue Titanium (Unused)(Apple Care+)(Aug 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹97,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳15%20Pro%20Max%20512gb%20Blue%20Titanium%20(Unused)(Apple%20Care+)(Aug%202026%20Warranty)(BH:100)(5G)%20Price%20₹97000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Pro Max 512gb Blue Titanium (Dual E</h3>
+      <div class='price'>₹70,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Pro%20Max%20512gb%20Blue%20Titanium%20(Dual%20E%20Price%20₹70000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳15 Pro Max 256gb Black Titanium (Oct 2026 Warranty)(BH:96)(5G)</h3>
+      <div class='price'>₹80,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳15%20Pro%20Max%20256gb%20Black%20Titanium%20(Oct%202026%20Warranty)(BH:96)(5G)%20Price%20₹80000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Pro 512gb Black Titanium (BH:85)(5G)</h3>
+      <div class='price'>₹72,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Pro%20512gb%20Black%20Titanium%20(BH:85)(5G)%20Price%20₹72000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Pro 128gb Black Titanium (Only Mobile)(Dual E</h3>
+      <div class='price'>₹62,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Pro%20128gb%20Black%20Titanium%20(Only%20Mobile)(Dual%20E%20Price%20₹62000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Pro 128gb Natural Titanium (Dual E</h3>
+      <div class='price'>₹62,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Pro%20128gb%20Natural%20Titanium%20(Dual%20E%20Price%20₹62000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Plus 256gb Black (BH:100)(5G)</h3>
+      <div class='price'>₹75,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Plus%20256gb%20Black%20(BH:100)(5G)%20Price%20₹75000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Plus 128gb Black (Oct 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹64,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Plus%20128gb%20Black%20(Oct%202026%20Warranty)(BH:100)(5G)%20Price%20₹64000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Plus 128gb Teal (Nov 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹64,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Plus%20128gb%20Teal%20(Nov%202026%20Warranty)(BH:100)(5G)%20Price%20₹64000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Plus 128gb White (Aug 2026 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹64,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Plus%20128gb%20White%20(Aug%202026%20Warranty)(BH:100)(5G)%20Price%20₹64000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 Plus 128gb White (Oct 2026 Warranty)(BH:99)(5G)</h3>
+      <div class='price'>₹62,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20Plus%20128gb%20White%20(Oct%202026%20Warranty)(BH:99)(5G)%20Price%20₹62000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 256gb Teal (Apple Care+)(Sep 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹68,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20256gb%20Teal%20(Apple%20Care+)(Sep%202027%20Warranty)(BH:100)(5G)%20Price%20₹68000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Pink (Unused)(May 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹65,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Pink%20(Unused)(May%202027%20Warranty)(BH:100)(5G)%20Price%20₹65000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Black (Unused)(April 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹65,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Black%20(Unused)(April%202027%20Warranty)(BH:100)(5G)%20Price%20₹65000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Ultramarine (Jan 2027 Warranty)(BH:100)(5G)</h3>
+      <div class='price'>₹58,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Ultramarine%20(Jan%202027%20Warranty)(BH:100)(5G)%20Price%20₹58000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Ultramarine (BH:100)(5G)</h3>
+      <div class='price'>₹55,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Ultramarine%20(BH:100)(5G)%20Price%20₹55000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Teal (Sep 2026 Warranty)(BH:99)(5G)</h3>
+      <div class='price'>₹55,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Teal%20(Sep%202026%20Warranty)(BH:99)(5G)%20Price%20₹55000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb White (July 2026 Warranty)(BH:98)(5G)</h3>
+      <div class='price'>₹54,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20White%20(July%202026%20Warranty)(BH:98)(5G)%20Price%20₹54000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Black (June 2026 Warranty)(Only Mobile)(BH:99)(5G)</h3>
+      <div class='price'>₹53,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Black%20(June%202026%20Warranty)(Only%20Mobile)(BH:99)(5G)%20Price%20₹53000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>16 128gb Black (BH:91)(5G)</h3>
+      <div class='price'>₹50,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2016%20128gb%20Black%20(BH:91)(5G)%20Price%20₹50000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>14 Pro Max 256gb Deep Purple (BH:85)(5G)</h3>
+      <div class='price'>₹67,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2014%20Pro%20Max%20256gb%20Deep%20Purple%20(BH:85)(5G)%20Price%20₹67000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>14 Pro Max 256gb Deep Purple (Only Mobile)(BH:83)(5G)</h3>
+      <div class='price'>₹62,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2014%20Pro%20Max%20256gb%20Deep%20Purple%20(Only%20Mobile)(BH:83)(5G)%20Price%20₹62000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>14 Pro Max 256gb Deep Purple (BH:81)(5G)</h3>
+      <div class='price'>₹57,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2014%20Pro%20Max%20256gb%20Deep%20Purple%20(BH:81)(5G)%20Price%20₹57000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>13 Pro Max 1TB Alphine Green (BH:77)(5G)</h3>
+      <div class='price'>₹52,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2013%20Pro%20Max%201TB%20Alphine%20Green%20(BH:77)(5G)%20Price%20₹52000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Plus 256gb Black (BH:98)(5G)</h3>
+      <div class='price'>₹57,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Plus%20256gb%20Black%20(BH:98)(5G)%20Price%20₹57000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Plus 256gb Blue (BH:83)(5G)</h3>
+      <div class='price'>₹50,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Plus%20256gb%20Blue%20(BH:83)(5G)%20Price%20₹50000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Plus 128gb Black (BH:100)(5G)</h3>
+      <div class='price'>₹55,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Plus%20128gb%20Black%20(BH:100)(5G)%20Price%20₹55000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 Plus 128gb Green (BH:100)(Unused)(5G)</h3>
+      <div class='price'>₹55,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20Plus%20128gb%20Green%20(BH:100)(Unused)(5G)%20Price%20₹55000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>15 256gb Blue (Feb 2027 Warranty)(BH:99)(5G)</h3>
+      <div class='price'>₹57,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2015%20256gb%20Blue%20(Feb%202027%20Warranty)(BH:99)(5G)%20Price%20₹57000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>12 Pro Max 512gb Pacific Blue (Only Mobile)(BH:82)(5G)</h3>
+      <div class='price'>₹40,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2012%20Pro%20Max%20512gb%20Pacific%20Blue%20(Only%20Mobile)(BH:82)(5G)%20Price%20₹40000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>13 128gb Starlight (Aug 2026 Warranty)(BH:88)(5G)</h3>
+      <div class='price'>₹32,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%2013%20128gb%20Starlight%20(Aug%202026%20Warranty)(BH:88)(5G)%20Price%20₹32000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>Macbook Pro M3 Pro Chip 18/512 14inch Space Black (BH:94)(CC:147)</h3>
+      <div class='price'>₹112,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Macbook%20Pro%20M3%20Pro%20Chip%2018/512%2014inch%20Space%20Black%20(BH:94)(CC:147)%20Price%20₹112000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>MacBook Pro M1 Pro Chip 16/512 16inch Space Gray (BH:98)(CC:26)</h3>
+      <div class='price'>₹102,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20MacBook%20Pro%20M1%20Pro%20Chip%2016/512%2016inch%20Space%20Gray%20(BH:98)(CC:26)%20Price%20₹102000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>MacBook Pro M2 Pro Chip 16/512 14inch Space Gray (Apple Care+)(Oct 2026  Warranty)(BH:90)(CC:212)</h3>
+      <div class='price'>₹92,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20MacBook%20Pro%20M2%20Pro%20Chip%2016/512%2014inch%20Space%20Gray%20(Apple%20Care+)(Oct%202026%20%20Warranty)(BH:90)(CC:212)%20Price%20₹92000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>Macbook Air M4 Chip 16/256 15inch Midnight(June 2026 Warranty)(BH:100)(CC:23)</h3>
+      <div class='price'>₹82,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Macbook%20Air%20M4%20Chip%2016/256%2015inch%20Midnight(June%202026%20Warranty)(BH:100)(CC:23)%20Price%20₹82000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>MacBook Neo A18 Pro 8/512 13inch Indigo (May 2027 Warranty)(BH:100)(CC:1)</h3>
+      <div class='price'>₹67,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20MacBook%20Neo%20A18%20Pro%208/512%2013inch%20Indigo%20(May%202027%20Warranty)(BH:100)(CC:1)%20Price%20₹67000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳Watch Ultra 3 49mm Natural GPS+Cellular Blue Trail Loop (Nov 2026 Warranty)(BH:100)</h3>
+      <div class='price'>₹62,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳Watch%20Ultra%203%2049mm%20Natural%20GPS+Cellular%20Blue%20Trail%20Loop%20(Nov%202026%20Warranty)(BH:100)%20Price%20₹62000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>Watch Ultra 2 49mm Titanium GPS+Cellular Black Titanium With Milanese Loop (Worth 25k)(BH:96)</h3>
+      <div class='price'>₹52,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Watch%20Ultra%202%2049mm%20Titanium%20GPS+Cellular%20Black%20Titanium%20With%20Milanese%20Loop%20(Worth%2025k)(BH:96)%20Price%20₹52000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳 Watch Ultra 2 49mm Natural GPS+Cellular Blue Trail Loop (BH:94)</h3>
+      <div class='price'>₹42,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳%20Watch%20Ultra%202%2049mm%20Natural%20GPS+Cellular%20Blue%20Trail%20Loop%20(BH:94)%20Price%20₹42000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>Watch Ultra 49mm Titanium GPS+Cellular Titanium Green Alpine Loop(BH:88)</h3>
+      <div class='price'>₹35,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Watch%20Ultra%2049mm%20Titanium%20GPS+Cellular%20Titanium%20Green%20Alpine%20Loop(BH:88)%20Price%20₹35000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳Series SE 3 40mm Midnight GPS (Mar 2027 Warranty)(BH:100)</h3>
+      <div class='price'>₹19,500</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳Series%20SE%203%2040mm%20Midnight%20GPS%20(Mar%202027%20Warranty)(BH:100)%20Price%20₹19500' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>Series 9 45mm Midnight GPS+Cellular (Only Watch)(BH:88)</h3>
+      <div class='price'>₹16,500</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Series%209%2045mm%20Midnight%20GPS+Cellular%20(Only%20Watch)(BH:88)%20Price%20₹16500' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳Series SE 2 40mm Midnight GPS (BH:100)(Unused Strap)</h3>
+      <div class='price'>₹15,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳Series%20SE%202%2040mm%20Midnight%20GPS%20(BH:100)(Unused%20Strap)%20Price%20₹15000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳Series 7 45mm Midnight GPS (BH:85)</h3>
+      <div class='price'>₹15,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳Series%207%2045mm%20Midnight%20GPS%20(BH:85)%20Price%20₹15000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳Series 7 45mm Midnight GPS (BH:86)</h3>
+      <div class='price'>₹15,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳Series%207%2045mm%20Midnight%20GPS%20(BH:86)%20Price%20₹15000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳Series 7 41mm Green Aluminium Case+Green Band GPS (BH:85)</h3>
+      <div class='price'>₹10,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳Series%207%2041mm%20Green%20Aluminium%20Case+Green%20Band%20GPS%20(BH:85)%20Price%20₹10000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳iPad Pro M5 Chip 13inch 256gb Wi</h3>
+      <div class='price'>₹117,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳iPad%20Pro%20M5%20Chip%2013inch%20256gb%20Wi%20Price%20₹117000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳iPad Pro M5 Chip 13inch 256gb Wi</h3>
+      <div class='price'>₹99,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳iPad%20Pro%20M5%20Chip%2013inch%20256gb%20Wi%20Price%20₹99000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Pro M4 Chip 13inch 512gb Wi</h3>
+      <div class='price'>₹97,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Pro%20M4%20Chip%2013inch%20512gb%20Wi%20Price%20₹97000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>🇮🇳 iPad Pro 6th Gen M2 Chip 12.9inch 128gb Wi</h3>
+      <div class='price'>₹59,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20🇮🇳%20iPad%20Pro%206th%20Gen%20M2%20Chip%2012.9inch%20128gb%20Wi%20Price%20₹59000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M3 Chip 13inch 256gb Wi</h3>
+      <div class='price'>₹52,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M3%20Chip%2013inch%20256gb%20Wi%20Price%20₹52000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M3 Chip 13inch 128gb WiFi Space Gray (BH:100)</h3>
+      <div class='price'>₹55,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M3%20Chip%2013inch%20128gb%20WiFi%20Space%20Gray%20(BH:100)%20Price%20₹55000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M3 Chip 13inch 128gb Wi</h3>
+      <div class='price'>₹55,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M3%20Chip%2013inch%20128gb%20Wi%20Price%20₹55000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M3 Chip 13inch 128gb WiFi Space Gray (July 2026 Warranty)(BH:99)</h3>
+      <div class='price'>₹54,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M3%20Chip%2013inch%20128gb%20WiFi%20Space%20Gray%20(July%202026%20Warranty)(BH:99)%20Price%20₹54000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M3 Chip 13inch 128gb WiFi Space Gray (BH:93/94)</h3>
+      <div class='price'>₹52,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M3%20Chip%2013inch%20128gb%20WiFi%20Space%20Gray%20(BH:93/94)%20Price%20₹52000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M2 Chip 13inch 256gb 5G+Wi</h3>
+      <div class='price'>₹57,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M2%20Chip%2013inch%20256gb%205G+Wi%20Price%20₹57000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Air M1 Chip 5th Gen 10.9inch Wi</h3>
+      <div class='price'>₹30,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Air%20M1%20Chip%205th%20Gen%2010.9inch%20Wi%20Price%20₹30000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad A16 11inch Wi</h3>
+      <div class='price'>₹52,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20A16%2011inch%20Wi%20Price%20₹52000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad A16 11inch Wi</h3>
+      <div class='price'>₹30,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20A16%2011inch%20Wi%20Price%20₹30000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad Mini 5th Gen 7.9inch 4G+Wi</h3>
+      <div class='price'>₹20,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%20Mini%205th%20Gen%207.9inch%204G+Wi%20Price%20₹20000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>iPad 6th Gen 9.7inch Wi</h3>
+      <div class='price'>₹11,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20iPad%206th%20Gen%209.7inch%20Wi%20Price%20₹11000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>AirPods 4 (Dec 2026 Warranty)</h3>
+      <div class='price'>₹9,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20AirPods%204%20(Dec%202026%20Warranty)%20Price%20₹9000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>APPLE</div>
+      <h3>Apple Pencil 1st Gen</h3>
+      <div class='price'>₹5,500</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Apple%20Pencil%201st%20Gen%20Price%20₹5500' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Fold 7 5G 16/1TB Blue Shadow (Aug 2026 Warranty)</h3>
+      <div class='price'>₹127,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Fold%207%205G%2016/1TB%20Blue%20Shadow%20(Aug%202026%20Warranty)%20Price%20₹127000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Fold 7 5G 12/512 Jet Black (Aug 2026 Warranty)</h3>
+      <div class='price'>₹118,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Fold%207%205G%2012/512%20Jet%20Black%20(Aug%202026%20Warranty)%20Price%20₹118000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Fold 7 5G 12/512 Jetblack (July 2026 Warranty)</h3>
+      <div class='price'>₹118,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Fold%207%205G%2012/512%20Jetblack%20(July%202026%20Warranty)%20Price%20₹118000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Fold 7 5G 12/256 Jet Black (Aug 2026 Warranty)</h3>
+      <div class='price'>₹108,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Fold%207%205G%2012/256%20Jet%20Black%20(Aug%202026%20Warranty)%20Price%20₹108000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26 Ultra 5G 12/512 Sliver Shadow (Spl Edition)(Jan 2027 Warranty)</h3>
+      <div class='price'>₹125,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26%20Ultra%205G%2012/512%20Sliver%20Shadow%20(Spl%20Edition)(Jan%202027%20Warranty)%20Price%20₹125000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26 Ultra 5G 12/512 White (Mar 2027 Warranty)</h3>
+      <div class='price'>₹123,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26%20Ultra%205G%2012/512%20White%20(Mar%202027%20Warranty)%20Price%20₹123000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26 Ultra 5G 12/512 Cobalt Violet (Mar 2027 Warranty)</h3>
+      <div class='price'>₹123,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26%20Ultra%205G%2012/512%20Cobalt%20Violet%20(Mar%202027%20Warranty)%20Price%20₹123000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26 Ultra 5G 12/256 Black</h3>
+      <div class='price'>₹100,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26%20Ultra%205G%2012/256%20Black%20Price%20₹100000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S25 Ultra 5G 12/512 Titanium Silver Blue (Jan 2027 Warranty)</h3>
+      <div class='price'>₹92,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S25%20Ultra%205G%2012/512%20Titanium%20Silver%20Blue%20(Jan%202027%20Warranty)%20Price%20₹92000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S25 Ultra 5G 12/512 Titanium Silver Blue (July 2026 Warranty)</h3>
+      <div class='price'>₹90,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S25%20Ultra%205G%2012/512%20Titanium%20Silver%20Blue%20(July%202026%20Warranty)%20Price%20₹90000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S25 Ultra 5G 12/512 Titanium Black*2/Silver Blue*3</h3>
+      <div class='price'>₹84,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S25%20Ultra%205G%2012/512%20Titanium%20Black*2/Silver%20Blue*3%20Price%20₹84000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S25 Ultra 5G 12/256 Titanium Gray (Aug 2026 Warranty)</h3>
+      <div class='price'>₹80,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S25%20Ultra%205G%2012/256%20Titanium%20Gray%20(Aug%202026%20Warranty)%20Price%20₹80000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26+ 5G 12/512 Cobalt Violet (Mar 2027 Warranty)</h3>
+      <div class='price'>₹87,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26+%205G%2012/512%20Cobalt%20Violet%20(Mar%202027%20Warranty)%20Price%20₹87000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Filp 7 5G 12/512 Mint (Sep 2026 Warranty)</h3>
+      <div class='price'>₹72,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Filp%207%205G%2012/512%20Mint%20(Sep%202026%20Warranty)%20Price%20₹72000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Filp 7 5G 12/512 Jet Black/Blue Shadow (July 2026 Warranty)</h3>
+      <div class='price'>₹72,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Filp%207%205G%2012/512%20Jet%20Black/Blue%20Shadow%20(July%202026%20Warranty)%20Price%20₹72000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Filp 7 5G 12/256 Blue Shadow (Only Mobile)</h3>
+      <div class='price'>₹60,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Filp%207%205G%2012/256%20Blue%20Shadow%20(Only%20Mobile)%20Price%20₹60000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S24 Ultra 5G 12/512 Titanium Blue (Spl Edition)</h3>
+      <div class='price'>₹70,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S24%20Ultra%205G%2012/512%20Titanium%20Blue%20(Spl%20Edition)%20Price%20₹70000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S24 Ultra 5G 12/512 Titanium Violet</h3>
+      <div class='price'>₹67,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S24%20Ultra%205G%2012/512%20Titanium%20Violet%20Price%20₹67000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S24 Ultra 5G 12/256 Titanium Yellow</h3>
+      <div class='price'>₹65,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S24%20Ultra%205G%2012/256%20Titanium%20Yellow%20Price%20₹65000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S24 Ultra 5G 12/256 Titanium Grey</h3>
+      <div class='price'>₹62,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S24%20Ultra%205G%2012/256%20Titanium%20Grey%20Price%20₹62000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26 5G 12/512 White (Mar 2027 Warranty)</h3>
+      <div class='price'>₹77,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26%205G%2012/512%20White%20(Mar%202027%20Warranty)%20Price%20₹77000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S26 5G 12/256 Sky Blue (Mar 2027 Warranty)</h3>
+      <div class='price'>₹70,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S26%205G%2012/256%20Sky%20Blue%20(Mar%202027%20Warranty)%20Price%20₹70000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Fold 6 5G 12/256 Navy (July 2026 Warranty)</h3>
+      <div class='price'>₹70,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Fold%206%205G%2012/256%20Navy%20(July%202026%20Warranty)%20Price%20₹70000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S23 Ultra 5G 12/512 Phantom Black</h3>
+      <div class='price'>₹52,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S23%20Ultra%205G%2012/512%20Phantom%20Black%20Price%20₹52000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Filp 7 FE 5G 8/256 Black (Sep 2026 Warranty)</h3>
+      <div class='price'>₹48,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Filp%207%20FE%205G%208/256%20Black%20(Sep%202026%20Warranty)%20Price%20₹48000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Flip 7 FE 5G 8/256 White (Only Mobile)(Jan 2027 Warranty)</h3>
+      <div class='price'>₹48,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Flip%207%20FE%205G%208/256%20White%20(Only%20Mobile)(Jan%202027%20Warranty)%20Price%20₹48000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S25 FE 5G 8/128 Jet Black (Dec 2026 Warranty)</h3>
+      <div class='price'>₹45,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S25%20FE%205G%208/128%20Jet%20Black%20(Dec%202026%20Warranty)%20Price%20₹45000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Filp 6 5G 12/512 Silver Shadow</h3>
+      <div class='price'>₹47,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Filp%206%205G%2012/512%20Silver%20Shadow%20Price%20₹47000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>Z Flip 6 5G 12/256 Blue*2/Silver Shadow</h3>
+      <div class='price'>₹42,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20Z%20Flip%206%205G%2012/256%20Blue*2/Silver%20Shadow%20Price%20₹42000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>A57 5G 12/256 Awesome Icyblue (Apr 2027 Warranty)</h3>
+      <div class='price'>₹47,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20A57%205G%2012/256%20Awesome%20Icyblue%20(Apr%202027%20Warranty)%20Price%20₹47000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S24+ 5G 12/512 Onyx Black (Only Mobile)</h3>
+      <div class='price'>₹47,000</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S24+%205G%2012/512%20Onyx%20Black%20(Only%20Mobile)%20Price%20₹47000' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+    <div class='card'>
+      <img src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'>
+      <div class='brand'>SAMSUNG</div>
+      <h3>S24 FE 5G 8/128 Graphite (Only Mobile)</h3>
+      <div class='price'>₹32,500</div>
+      <a class='wa' href='https://wa.me/917010291006?text=Hi%20Mr.Mobile%20👋%20I'm%20interested%20in:%20S24%20FE%205G%208/128%20Graphite%20(Only%20Mobile)%20Price%20₹32500' target='_blank'>WhatsApp Inquiry</a>
+    </div>
+</div></div>
 
 <script>
-document.querySelectorAll('.btn').forEach(btn=>{
-btn.onclick=function(){
-const c=this.closest('.card');
-const model=c.querySelector('.title').innerText;
-const specs=c.querySelector('.specs').innerText;
-const price=c.querySelector('.price').innerText;
-const msg=`Hi Mr.Mobile,%0A%0AI am interested in:%0A${model}%0A%0A${specs}%0APrice: ${price}`;
-window.open('https://wa.me/917010291006?text='+msg,'_blank');
+search.onkeyup=function(){
+let q=this.value.toLowerCase();
+document.querySelectorAll('#grid .card').forEach(c=>c.style.display=c.innerText.toLowerCase().includes(q)?'block':'none');
 }
-})
+sort.onchange=function(){
+let g=document.getElementById('grid');
+let cards=[...g.children];
+cards.sort((a,b)=>{
+ let pa=parseInt(a.querySelector('.price').innerText.replace(/[^0-9]/g,''));
+ let pb=parseInt(b.querySelector('.price').innerText.replace(/[^0-9]/g,''));
+ return this.value==='high'?pb-pa:pa-pb;
+});
+cards.forEach(c=>g.appendChild(c));
+}
 </script>
-<a class="floatwa" href="https://wa.me/917010291006?text=HI">💬</a>
-</body>
-</html>
+</body></html>
